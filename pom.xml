@@ -10,6 +10,9 @@
     <packaging>pom</packaging>
 
     <name>yumbook</name>
+    <modules>
+        <module>user</module>
+    </modules>
 
 
     <properties>
