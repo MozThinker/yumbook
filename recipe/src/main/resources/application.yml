@@ -3,3 +3,15 @@ server:
 spring:
   application:
     name: recipe
+  datasource:
+    username: 'yumbook'
+    url: jdbc:postgresql://localhost:5432/recipe
+    password: 'password'
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
