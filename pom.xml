@@ -12,6 +12,7 @@
     <name>yumbook</name>
     <modules>
         <module>user</module>
+        <module>recipe</module>
     </modules>
 
 
