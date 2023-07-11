@@ -5,7 +5,7 @@ spring:
     name: recipe
   datasource:
     username: 'yumbook'
-    url: jdbc:postgresql://localhost:5432/recipe
+    url: jdbc:postgresql://localhost:5432/recipe_test
     password: 'password'
   jpa:
     properties:
@@ -13,7 +13,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
 
 cors:

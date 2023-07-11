@@ -32,7 +32,7 @@ public record RecipeService(RecipeRepository recipeRepository) {
         return recipeRepository.save(recipe);
     }
 
-    Optional<Recipe> getRecipeById(Integer id){
+    public Optional<Recipe> getRecipeById(Integer id){
         return recipeRepository.findById(id);
     }
 
@@ -95,7 +95,7 @@ public record RecipeService(RecipeRepository recipeRepository) {
         }
     }
 
-    public boolean deleteRecipe(Integer id) {
+    public boolean deleteRecipeById(Integer id) {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 
         if (optionalRecipe.isPresent()) {
