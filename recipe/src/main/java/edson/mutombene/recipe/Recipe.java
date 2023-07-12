@@ -38,9 +38,9 @@ public class Recipe {
     private int servings;
     @Schema(name = "name", example = "Margherita Pizza")
     private String name;
-    @Schema(name = "Ingredients", example = "Mozzarella 100gr, 1 Onion")
+    @Schema(name = "ingredients", example = "Mozzarella 100gr, 1 Onion")
     private String ingredients;
-    @Schema(name = "Instruction of how to make", example = "Roll out the pizza dough on a lightly floured surface to your desired thickness. Transfer the dough to a baking sheet or pizza stone...")
+    @Schema(name = "instruction", example = "Roll out the pizza dough on a lightly floured surface to your desired thickness. Transfer the dough to a baking sheet or pizza stone...")
     private String instructions;
     @Schema(name = "vegetarian", example = "false")
     private boolean vegetarian = false;

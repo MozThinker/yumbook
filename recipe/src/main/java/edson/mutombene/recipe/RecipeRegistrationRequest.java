@@ -9,9 +9,9 @@ public record RecipeRegistrationRequest(
         int servings,
         @Schema(name = "name", example = "Margherita Pizza")
         String name,
-        @Schema(name = "Ingredients", example = "Mozzarella 100gr, 1 Onion")
+        @Schema(name = "ingredients", example = "Mozzarella 100gr, 1 Onion")
         String ingredients,
-        @Schema(name = "Instruction of how to make", example = "Roll out the pizza dough on a lightly floured surface to your desired thickness. Transfer the dough to a baking sheet or pizza stone...")
+        @Schema(name = "instruction", example = "Roll out the pizza dough on a lightly floured surface to your desired thickness. Transfer the dough to a baking sheet or pizza stone...")
         String instructions,
         @Schema(name = "vegetarian", example = "false")
         boolean vegetarian) {
