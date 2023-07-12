@@ -10,14 +10,19 @@
     <packaging>pom</packaging>
 
     <name>yumbook</name>
+    <modules>
+        <module>user</module>
+        <module>recipe</module>
+    </modules>
 
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.maven.plugin.version>3.1.0</spring.boot.maven.plugin.version>
-        <spring.boot.dependencies.version>3.1.0</spring.boot.dependencies.version>
+        <spring.boot.maven.plugin.version>3.1.1</spring.boot.maven.plugin.version>
+        <spring.boot.dependencies.version>3.1.1</spring.boot.dependencies.version>
+        <spock.version>2.4-M1-groovy-4.0</spock.version>
     </properties>
 
     <dependencyManagement>
@@ -45,6 +50,20 @@
             <version>${spring.boot.dependencies.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>${spock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-spring</artifactId>
+            <version>${spock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -56,8 +75,22 @@
                     <version>${spring.boot.maven.plugin.version}</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compileTests</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>
+
 
 </project>
