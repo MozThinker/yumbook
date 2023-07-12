@@ -2,6 +2,11 @@ package edson.mutombene.recipe;
 
 import edson.mutombene.recipe.utils.PagingHeaders;
 import edson.mutombene.recipe.utils.PagingResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.LikeIgnoreCase;
@@ -42,6 +47,15 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
+    @Operation(summary = "This endpoint is to create a Recipe in DB")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+            description = "Created a new Recipe in DB",
+            content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "409",
+                    description = "Could not create the Recipe, this ID is already associated with other Recipe",
+            content = @Content)
+    })
     @Transactional
     @PostMapping()
     public ResponseEntity<?> registerRecipe(@RequestBody RecipeRegistrationRequest recipeRegistrationRequest) {
@@ -49,10 +63,19 @@ public class RecipeController {
         return new ResponseEntity<>(recipeService.registerRecipe(recipeRegistrationRequest), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "This endpoint is to get a Recipe by Id from DB")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+            description = "Return a Recipe from DB",
+            content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404",
+            description = "Recipe doesn't exist",
+            content = @Content)
+    })
     @Transactional
     @GetMapping(value ="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Cacheable(value = "carSearchCache", key = "#id")
-    public ResponseEntity<?> getRecipeById(@PathVariable("id") Integer recipeId) {
+    //@Cacheable(value = "carSearchCache", key = "#id")
+    public ResponseEntity<?> getRecipeById(@PathVariable("id") @Parameter(name = "id", description = "Recipe id", example = "1") Integer recipeId) {
         Optional<Recipe> recipe = recipeService.getRecipeById(recipeId);
 
         if (recipe.isPresent())
@@ -60,6 +83,10 @@ public class RecipeController {
         return new ResponseEntity<>("Recipe doesn't exist", HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "This endpoint is to fetch a list of Recipes from DB, based on json of one or more criteria and sort")
+    @ApiResponse(responseCode = "200",
+            description = "Return a list of Recipes from DB",
+            content = {@Content(mediaType = "application/json")})
     @Transactional
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @Cacheable(value = "recipeSearchCache", key = "{#root.methodName, #spec, #sort, #headers}")
@@ -73,8 +100,15 @@ public class RecipeController {
                     @Spec(path = "ingredients", params = "ingredientsExclude", spec = NotLikeIgnoreCase.class),
                     @Spec(path = "instructions", params = "instructions", spec = LikeIgnoreCase.class),
                     @Spec(path = "vegetarian", params = "vegetarian", spec = Equal.class),
-            }) Specification<Recipe> spec,
-            Sort sort,
+            }) @Parameter(description = "userId & Servings", example = "{\n" +
+                    "   \"userId\":\"5\",\n" +
+                    "   \"servings\":\"4\"\n" +
+                    "}") Specification<Recipe> spec,
+            @Parameter(description = "userId & Servings", example = "{\n" +
+                    "  \"sort\": [\n" +
+                    "    \"id,desc\"\n" +
+                    "  ]\n" +
+                    "}") Sort sort,
             @RequestHeader HttpHeaders headers) {
         final PagingResponse response = recipeService.get(spec, headers, sort);
         return new ResponseEntity<>(response.getElements(), returnHttpHeaders(response), HttpStatus.OK);
@@ -90,9 +124,18 @@ public class RecipeController {
         return headers;
     }
 
+    @Operation(summary = "This endpoint is to update a Recipe on DB")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Recipe updated successfully!",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404",
+                    description = "Recipe doesn't exist",
+                    content = @Content)
+    })
     @Transactional
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateRecipe(@PathVariable("id") Integer recipeId, @RequestBody Recipe updateRecipe) {
+    public ResponseEntity<?> updateRecipe(@PathVariable("id") @Parameter(name = "id", description = "Recipe id", example = "1") Integer recipeId, @RequestBody Recipe updateRecipe) {
         boolean recipeUpdated = recipeService.updateRecipe(recipeId, updateRecipe);
 
         if (recipeUpdated) {
@@ -102,9 +145,18 @@ public class RecipeController {
         }
     }
 
+    @Operation(summary = "This endpoint is to delete a Recipe from DB by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Recipe deleted from DB",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404",
+                    description = "Recipe doesn't exist",
+                    content = @Content)
+    })
     @Transactional
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteRecipe(@PathVariable("id") Integer recipeId) {
+    public ResponseEntity<?> deleteRecipe(@PathVariable("id") @Parameter(name = "id", description = "Recipe id", example = "1") Integer recipeId) {
         boolean recipeDeleted = recipeService.deleteRecipeById(recipeId);
 
         if (recipeDeleted) {
