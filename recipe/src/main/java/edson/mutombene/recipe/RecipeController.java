@@ -59,7 +59,7 @@ public class RecipeController {
     @Transactional
     @PostMapping()
     public ResponseEntity<?> registerRecipe(@RequestBody RecipeRegistrationRequest recipeRegistrationRequest) {
-        log.info("new recipe registration {}", recipeRegistrationRequest);
+        log.info("New recipe registration {}", recipeRegistrationRequest);
         return new ResponseEntity<>(recipeService.registerRecipe(recipeRegistrationRequest), HttpStatus.CREATED);
     }
 
@@ -76,6 +76,7 @@ public class RecipeController {
     @GetMapping(value ="/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@Cacheable(value = "carSearchCache", key = "#id")
     public ResponseEntity<?> getRecipeById(@PathVariable("id") @Parameter(name = "id", description = "Recipe id", example = "1") Integer recipeId) {
+        log.info("Fetching recipe by ID: {}", recipeId);
         Optional<Recipe> recipe = recipeService.getRecipeById(recipeId);
 
         if (recipe.isPresent())
@@ -110,6 +111,7 @@ public class RecipeController {
                     "  ]\n" +
                     "}") Sort sort,
             @RequestHeader HttpHeaders headers) {
+        log.info("Fetching recipes with specifications and sorting: {}, {}, {}", spec, sort, headers);
         final PagingResponse response = recipeService.get(spec, headers, sort);
         return new ResponseEntity<>(response.getElements(), returnHttpHeaders(response), HttpStatus.OK);
     }
@@ -136,6 +138,7 @@ public class RecipeController {
     @Transactional
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateRecipe(@PathVariable("id") @Parameter(name = "id", description = "Recipe id", example = "1") Integer recipeId, @RequestBody Recipe updateRecipe) {
+        log.info("Updating recipe with ID: {}, Updated recipe: {}", recipeId, updateRecipe);
         boolean recipeUpdated = recipeService.updateRecipe(recipeId, updateRecipe);
 
         if (recipeUpdated) {
@@ -157,6 +160,7 @@ public class RecipeController {
     @Transactional
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteRecipe(@PathVariable("id") @Parameter(name = "id", description = "Recipe id", example = "1") Integer recipeId) {
+        log.info("Deleting recipe with ID: {}", recipeId);
         boolean recipeDeleted = recipeService.deleteRecipeById(recipeId);
 
         if (recipeDeleted) {
