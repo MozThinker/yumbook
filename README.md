@@ -1,6 +1,13 @@
 # yumbook
 
-This is a README file for Yumbook. It provides instructions on how to run the application locally.
+This is a README file for Yumbook. Yumbook is an application which allows users to manage their favourite recipes and also see recipe of other users. This application is based on a micro-services architecture, which means we can add more functionalities easily by adding more micro-services.
+
+## Architeture
+![Yumbook Architecture](architecture.png)
+
+The image above is final/desired **architecture** of the **Yumbook** application. Currently I've implemented the recipe micro-service, the same is responsible for create the recipes and persiste the data on a postgres DB.
+
+Please find below the instructions on how to run the application locally.
 
 ## Prerequisites
 
