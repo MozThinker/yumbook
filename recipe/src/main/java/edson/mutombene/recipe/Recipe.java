@@ -42,7 +42,7 @@ public class Recipe {
     @Schema(name = "Instruction of how to make", example = "Roll out the pizza dough on a lightly floured surface to your desired thickness. Transfer the dough to a baking sheet or pizza stone...")
     private String instructions;
     @Schema(name = "Is the recipe vegetarian?", example = "false")
-    private boolean vegetarian;
+    private boolean vegetarian = false;
     @Schema(name = "Date of Recipe creation", example = "2023-07-06 12:10:30")
     private LocalDateTime createdAt;
     @Schema(name = "Date of Recipe updated", example = "2023-07-11 10:30:15")

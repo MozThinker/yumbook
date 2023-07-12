@@ -19,6 +19,21 @@ import java.util.Optional;
 public record RecipeService(RecipeRepository recipeRepository) {
 
     public Recipe registerRecipe (RecipeRegistrationRequest request) {
+        if (request.userId() == null || request.userId() <= 0) {
+            throw new IllegalArgumentException("Invalid userId");
+        }
+        if (request.servings() <= 0) {
+            throw new IllegalArgumentException("Invalid servings");
+        }
+        if (request.name() == null || request.name().isEmpty()) {
+            throw new IllegalArgumentException("Invalid recipe name");
+        }
+        if (request.ingredients() == null || request.ingredients().isEmpty()) {
+            throw new IllegalArgumentException("Invalid recipe ingredients");
+        }
+        if (request.instructions() == null || request.instructions().isEmpty()) {
+            throw new IllegalArgumentException("Invalid recipe instructions");
+        }
         Recipe recipe = Recipe.builder()
                 .userId(request.userId())
                 .servings(request.servings())
@@ -33,6 +48,9 @@ public record RecipeService(RecipeRepository recipeRepository) {
     }
 
     public Optional<Recipe> getRecipeById(Integer id){
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid recipe ID");
+        }
         return recipeRepository.findById(id);
     }
 
@@ -77,6 +95,12 @@ public record RecipeService(RecipeRepository recipeRepository) {
     }
 
     public boolean updateRecipe(Integer id, Recipe updatedRecipe) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid recipe ID");
+        }
+        if (updatedRecipe == null) {
+            throw new IllegalArgumentException("Invalid updated recipe");
+        }
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 
         if (optionalRecipe.isPresent()) {
@@ -96,6 +120,9 @@ public record RecipeService(RecipeRepository recipeRepository) {
     }
 
     public boolean deleteRecipeById(Integer id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid recipe ID");
+        }
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 
         if (optionalRecipe.isPresent()) {
@@ -107,7 +134,7 @@ public record RecipeService(RecipeRepository recipeRepository) {
     }
 
     private boolean isRequestPaged(HttpHeaders headers) {
-        return headers.containsKey(PagingHeaders.PAGE_NUMBER.getName()) && headers.containsKey(PagingHeaders.PAGE_SIZE.getName());
+        return headers != null && headers.containsKey(PagingHeaders.PAGE_NUMBER.getName()) && headers.containsKey(PagingHeaders.PAGE_SIZE.getName());
     }
 
     private Pageable buildPageRequest(HttpHeaders headers, Sort sort) {
