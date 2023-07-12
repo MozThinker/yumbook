@@ -48,5 +48,4 @@ public class Recipe {
     private LocalDateTime createdAt;
     @Schema(name = "Date of Recipe updated", example = "2023-07-11 10:30:15")
     private LocalDateTime updatedAt;
-
 }
